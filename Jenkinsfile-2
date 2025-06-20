@@ -2,13 +2,13 @@ pipeline {
   agent { label 'agent1' }
 
   environment{
-    MY_SECRETS = credentials('secrets')
+    MY_TOKEN = credentials('yc_token')
   }
   stages {
     stage('Copy cred data') {
       steps {
         sh '''
-            echo $MY_SECRETS >> test.txt
+            echo $MY_TOKEN >> test.txt
         '''
       }
     }
