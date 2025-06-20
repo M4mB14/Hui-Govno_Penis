@@ -3,12 +3,20 @@ pipeline {
 
   environment{
     MY_TOKEN = credentials('yc_token')
+    MY_CLOUD_ID = credentials('yc_cloud_id')
+    MY_FOLDER_ID = credentials('yc_folder_id')
+    SUBNET_ID = credentials('subnet_id')
+    SSH_PATH = credentials('ssh_public_key_path')
   }
   stages {
     stage('Copy cred data') {
       steps {
         sh '''
-            echo $MY_TOKEN >> test.txt
+            echo $MY_TOKEN >> test.txt &&\
+            echo $MY_CLOUD_ID >> test.txt &&\
+            echo $MY_FOLDER_ID >> test.txt &&\
+            echo $SUBNET_ID >> test.txt &&\
+            echo $SSH_PATH >> test.txt 
         '''
       }
     }
