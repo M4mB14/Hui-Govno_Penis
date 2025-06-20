@@ -1,10 +1,14 @@
 pipeline {
   agent { label 'agent1' }
+  
+  environmen{
+    MY_TOKEN = credentials(52)
+  }
   stages {
     stage('Test') {
       steps {
         sh '''
-            pwd && ls -l && touch test.txt
+            echo $MY_TOKEN
         '''
       }
     }
