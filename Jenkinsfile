@@ -1,12 +1,14 @@
 pipeline {
-    agent {
-        label 'fucking-docker'
+  agent { dockerfile true }
+  stages {
+    stage('Test') {
+      steps {
+        sh '''
+          node --version
+          git --version
+          curl --version
+        '''
+      }
     }
-    stages {
-        stage('Build') {
-            steps {
-                echo "Running on docker-agent"
-            }
-        }
-    }
+  }
 }
