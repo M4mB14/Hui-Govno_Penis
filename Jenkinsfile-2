@@ -1,8 +1,8 @@
 pipeline {
   agent { label 'agent1' }
-  
-  environmen{
-    MY_TOKEN = credentials(52)
+
+  environment{
+    MY_TOKEN = credentials('52')
   }
   stages {
     stage('Test') {
