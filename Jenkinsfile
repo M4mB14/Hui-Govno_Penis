@@ -1,12 +1,10 @@
 pipeline {
-  agent { dockerfile true }
+  agent { image 'alpine:latest' }
   stages {
     stage('Test') {
       steps {
         sh '''
-          node --version
-          git --version
-          curl --version
+            echo "Hello from Docker!"
         '''
       }
     }
