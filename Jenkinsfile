@@ -8,7 +8,8 @@ pipeline {
         sh '''
             ansible --version && \
             terraform --version && \
-            docker --version
+            docker --version && \
+            ssh
         '''
       }
     }
