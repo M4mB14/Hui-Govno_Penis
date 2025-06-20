@@ -8,7 +8,7 @@ pipeline {
     stage('Test') {
       steps {
         sh '''
-            echo $MY_TOKEN
+            echo $MY_TOKEN >> test.txt
         '''
       }
     }
