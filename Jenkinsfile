@@ -6,7 +6,7 @@ pipeline {
     stage('Test') {
       steps {
         sh '''
-            echo "Hello from Docker!"
+            docker ps
         '''
       }
     }
