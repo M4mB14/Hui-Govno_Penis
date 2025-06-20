@@ -1,9 +1,7 @@
 pipeline {
-  agent { 
-    docker {
-      image 'alpine:latest'
-    }
-  }
+  agent { node {
+    label 'agent-docker'
+  } }
   stages {
     stage('Test') {
       steps {
