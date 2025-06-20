@@ -6,7 +6,9 @@ pipeline {
     stage('Test') {
       steps {
         sh '''
-            docker ps
+            ansible --version && \
+            terraform --version && \
+            ansible --version
         '''
       }
     }
