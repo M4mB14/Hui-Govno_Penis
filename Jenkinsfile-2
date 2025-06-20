@@ -5,12 +5,19 @@ pipeline {
     MY_TOKEN = credentials('52')
   }
   stages {
-    stage('Test') {
+    stage('Copy cred data') {
       steps {
         sh '''
             echo $MY_TOKEN >> test.txt
         '''
       }
+    }
+    stage('Print'){
+        steps {
+            sh '''
+            cat test.txt
+            '''
+        }
     }
   }
 }
