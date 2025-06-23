@@ -11,6 +11,15 @@ pipeline {
     SSH_PATH = credentials('ssh_public_key_path')
   }
   stages {
+    stage('SSH key generate') {
+      steps {
+        sh '''
+        rm -f jenkins jenkins.pub
+        ssh-keygen -t rsa -b 4096 -C "jenkins@ci" -N "" -f jenkins 
+        '''
+      }
+    }
+
     stage('Create tf.vars file') {
       steps {
         sh '''
