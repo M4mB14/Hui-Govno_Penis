@@ -1,11 +1,13 @@
 pipeline {
   agent { label 'agent1' }
 
-    stage('ssh create key') {
+  stages {
+    stage('ssh key generate') {
       steps {
         sh '''
-        ssh-keygen -t rsa -b 4096 -C "jenkins@ci" -N "" -f id_rsa
+        ssh-keygen -t rsa -b 4096 -C "jenkins@ci" -N "" -f id_rsa 
         '''
       }
     }
+  }
 }
