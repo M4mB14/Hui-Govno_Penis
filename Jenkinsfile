@@ -2,7 +2,7 @@ pipeline {
   agent { node {
     label 'agent2'
   } }
-  
+
   environment{
     MY_TOKEN = credentials('yc_token')
     MY_CLOUD_ID = credentials('yc_cloud_id')
@@ -14,6 +14,7 @@ pipeline {
     stage('Create tf.vars file') {
       steps {
         sh '''
+          cd terraform &&\
           rm -f terraform.tfvars && touch terraform.tfvars && \
           printf 'yc_token = "%s"\n' "$MY_TOKEN" >> terraform.tfvars && \
           printf 'yc_cloud_id = "%s"\n' "$MY_CLOUD_ID" >> terraform.tfvars && \
