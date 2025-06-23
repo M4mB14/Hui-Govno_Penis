@@ -2,14 +2,33 @@ pipeline {
   agent { node {
     label 'agent2'
   } }
+  
+  environment{
+    MY_TOKEN = credentials('yc_token')
+    MY_CLOUD_ID = credentials('yc_cloud_id')
+    MY_FOLDER_ID = credentials('yc_folder_id')
+    SUBNET_ID = credentials('subnet_id')
+    SSH_PATH = credentials('ssh_public_key_path')
+  }
   stages {
-    stage('Test') {
+    stage('Create tf.vars file') {
       steps {
         sh '''
-            ansible --version && \
-            terraform --version && \
-            docker --version && \
-            ssh
+          rm -f terraform.tfvars && touch terraform.tfvars && \
+          printf 'yc_token = "%s"\n' "$MY_TOKEN" >> terraform.tfvars && \
+          printf 'yc_cloud_id = "%s"\n' "$MY_CLOUD_ID" >> terraform.tfvars && \
+          printf 'yc_folder_id = "%s"\n' "$MY_FOLDER_ID" >> terraform.tfvars && \
+          printf 'subnet_id = "%s"\n' "$SUBNET_ID" >> terraform.tfvars && \
+          printf 'ssh_public_key_path = "%s"\n' "$SSH_PATH" >> terraform.tfvars
+
+        '''
+      }
+    }
+    stage('Terraform init') {
+      steps {
+        sh '''
+        terraform init &&\
+        terraform plan
         '''
       }
     }
