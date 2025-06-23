@@ -12,12 +12,12 @@ pipeline {
     stage('Create tf.vars file') {
       steps {
         sh '''
-            rm -f terraform.tfvars && touch terraform.tfvars &&\
-            echo "yc_token = " >> terraform.tfvars && echo $MY_TOKEN >> terraform.tfvars &&\
-            echo "yc_cloud_id = " >> terraform.tfvars && echo $MY_CLOUD_ID >> terraform.tfvars &&\
-            echo "yc_folder_id = " >> terraform.tfvars && echo $MY_FOLDER_ID >> terraform.tfvars &&\
-            echo "subnet_id = " >> terraform.tfvars && echo $SUBNET_ID >> terraform.tfvars &&\
-            echo "ssh_public_key_path = " >> terraform.tfvars && echo $SSH_PATH >> terraform.tfvars 
+          rm -f terraform.tfvars && touch terraform.tfvars && \
+          echo "yc_token = \"$MY_TOKEN\"" >> terraform.tfvars && \
+          echo "yc_cloud_id = \"$MY_CLOUD_ID\"" >> terraform.tfvars && \
+          echo "yc_folder_id = \"$MY_FOLDER_ID\"" >> terraform.tfvars && \
+          echo "subnet_id = \"$SUBNET_ID\"" >> terraform.tfvars && \
+          echo "ssh_public_key_path = \"$SSH_PATH\"" >> terraform.tfvars 
         '''
       }
     }
