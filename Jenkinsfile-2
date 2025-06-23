@@ -9,14 +9,15 @@ pipeline {
     SSH_PATH = credentials('ssh_public_key_path')
   }
   stages {
-    stage('Copy cred data') {
+    stage('Create tf.vars file') {
       steps {
         sh '''
-            echo $MY_TOKEN >> test.txt &&\
-            echo $MY_CLOUD_ID >> test.txt &&\
-            echo $MY_FOLDER_ID >> test.txt &&\
-            echo $SUBNET_ID >> test.txt &&\
-            echo $SSH_PATH >> test.txt 
+            touch terraform.tfvars
+            echo "yc_token = " > terraform.tfvars && echo $MY_TOKEN > terraform.tfvars &&\
+            echo "yc_cloud_id = " > terraform.tfvars && echo $MY_CLOUD_ID > terraform.tfvars &&\
+            echo "yc_folder_id = " > terraform.tfvars && echo $MY_FOLDER_ID > terraform.tfvars &&\
+            echo "subnet_id = " > terraform.tfvars && echo $SUBNET_ID > terraform.tfvars &&\
+            echo "ssh_public_key_path = " > terraform.tfvars && echo $SSH_PATH > terraform.tfvars 
         '''
       }
     }
