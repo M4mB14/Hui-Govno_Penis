@@ -13,11 +13,12 @@ pipeline {
       steps {
         sh '''
           rm -f terraform.tfvars && touch terraform.tfvars && \
-          echo 'yc_token = \"{$MY_TOKEN}\"' >> terraform.tfvars && \
-          echo 'yc_cloud_id = \"{$MY_CLOUD_ID}\"' >> terraform.tfvars && \
-          echo 'yc_folder_id = \"{$MY_FOLDER_ID}\"' >> terraform.tfvars && \
-          echo 'subnet_id = \"{$SUBNET_ID}\"' >> terraform.tfvars && \
-          echo 'ssh_public_key_path = \"{$SSH_PATH}\"' >> terraform.tfvars 
+          printf 'yc_token = "%s"\n' "$MY_TOKEN" >> terraform.tfvars && \
+          printf 'yc_cloud_id = "%s"\n' "$MY_CLOUD_ID" >> terraform.tfvars && \
+          printf 'yc_folder_id = "%s"\n' "$MY_FOLDER_ID" >> terraform.tfvars && \
+          printf 'subnet_id = "%s"\n' "$SUBNET_ID" >> terraform.tfvars && \
+          printf 'ssh_public_key_path = "%s"\n' "$SSH_PATH" >> terraform.tfvars
+
         '''
       }
     }
