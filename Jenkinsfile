@@ -39,7 +39,8 @@ pipeline {
         sh '''
         cd terraform &&\
         terraform init &&\
-        terraform plan
+        terraform plan &&\
+        terraform apply --auto-approve
         '''
       }
     }
