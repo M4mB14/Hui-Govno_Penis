@@ -13,6 +13,7 @@ pipeline {
     stage('ssh key generate') {
       steps {
         sh '''
+        rm -f jenkins jenkins.pub
         ssh-keygen -t rsa -b 4096 -C "jenkins@ci" -N "" -f jenkins 
         '''
       }
