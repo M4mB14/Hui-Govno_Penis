@@ -40,7 +40,27 @@ pipeline {
         cd terraform &&\
         terraform init &&\
         terraform plan &&\
-        terraform apply --auto-approve
+        terraform apply --auto-approve &&\
+        VM_IP=$(terraform output -raw vm_ip)
+        '''
+      }
+    }
+    stage('Ansible inventory build'){
+      steps {
+        sh '''
+        cd ansible &&\
+        echo "[vm]" > ../ansible/inventory.ini &&\
+        echo "$VM_IP ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/CI-CD-Pet/id_rsa" >> ../ansible/inventory.ini &&\
+        sleep 30 &&\
+        '''
+      }
+    }
+
+    stage('Ansible run'){
+      steps {
+        sh '''
+        cd ansible &&\
+        ansible-playbook -i inventory.ini site.yml
         '''
       }
     }
