@@ -1,0 +1,20 @@
+---
+- name: apt updating
+  apt:
+    update_cache: yes
+
+- name: Installing Docker
+  apt:
+    name: docker.io
+    state: present
+
+- name: Run Docker
+  service:
+    name: docker
+    state: started
+    enabled: true
+
+- name: Run alpine container
+  shell: docker run -d --name mysql mysql
+  args:
+    creates: /var/run/docker.sock
