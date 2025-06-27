@@ -1,6 +1,6 @@
 pipeline {
   agent { node {
-    label 'agent2'
+    label 'agent-docker-ans'
   } }
 
   environment{
