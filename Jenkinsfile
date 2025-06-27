@@ -41,12 +41,9 @@ pipeline {
         terraform init &&\
         terraform plan &&\
         terraform apply --auto-approve &&\
-        VM_IP=$(terraform output -raw vm_ip)
-        
-        cd ansible &&\
-        echo "[vm]" > ../ansible/inventory.ini &&\
-        echo "$VM_IP ansible_user=ubuntu ansible_ssh_private_key_file=~/jenkins" >> ../ansible/inventory.ini &&\
-        sleep 30 &&\
+        VM_IP=$(terraform output -raw vm_ip) &&\
+
+        cd ../ansible && ls && pwd
         '''
       }
     }
