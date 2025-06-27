@@ -34,7 +34,7 @@ pipeline {
         '''
       }
     }
-    stage('Terraform init') {
+    stage('Terraform init and Ansible inventory init') {
       steps {
         sh '''
         cd terraform &&\
@@ -42,15 +42,10 @@ pipeline {
         terraform plan &&\
         terraform apply --auto-approve &&\
         VM_IP=$(terraform output -raw vm_ip)
-        '''
-      }
-    }
-    stage('Ansible inventory build'){
-      steps {
-        sh '''
+        
         cd ansible &&\
         echo "[vm]" > ../ansible/inventory.ini &&\
-        echo "$VM_IP ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/CI-CD-Pet/id_rsa" >> ../ansible/inventory.ini &&\
+        echo "$VM_IP ansible_user=ubuntu ansible_ssh_private_key_file=~/jenkins" >> ../ansible/inventory.ini &&\
         sleep 30 &&\
         '''
       }
