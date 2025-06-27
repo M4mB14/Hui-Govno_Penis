@@ -45,7 +45,7 @@ pipeline {
 
         cd ../ansible &&\
         echo "[vm]" > ./inventory.ini &&\
-        echo "$VM_IP ansible_user=ubuntu ansible_ssh_private_key_file=./jenkins" >> ./inventory.ini
+        echo "$VM_IP ansible_user=ubuntu ansible_ssh_private_key_file=~/workspace/test-job/jenkins" >> ./inventory.ini
         '''
       }
     }
