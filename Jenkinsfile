@@ -1,6 +1,6 @@
 pipeline {
   agent { node {
-    label 'ansible'
+    label 'agent2'
   } }
 
   environment{
