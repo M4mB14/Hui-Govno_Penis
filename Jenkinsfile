@@ -43,18 +43,11 @@ pipeline {
         terraform apply --auto-approve &&\
         VM_IP=$(terraform output -raw vm_ip) &&\
 
-        cd ../ansible && ls && pwd
+        cd ../ansible &&\
+        echo "[vm]" > ./inventory.ini &&\
+        echo "$VM_IP ansible_user=ubuntu ansible_ssh_private_key_file=~/jenkins" >> ./inventory.ini &&\
+        
+        cat inventory.ini
         '''
       }
     }
-
-    stage('Ansible run'){
-      steps {
-        sh '''
-        cd ansible &&\
-        ansible-playbook -i inventory.ini site.yml
-        '''
-      }
-    }
-  }
-}
