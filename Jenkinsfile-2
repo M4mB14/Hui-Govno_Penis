@@ -19,7 +19,7 @@ pipeline {
       }
     }
 
-        stage('Create tf.vars file') {
+    stage('Create tf.vars file') {
       steps {
         sh '''
           cd terraform &&\
