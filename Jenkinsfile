@@ -52,7 +52,7 @@ pipeline {
       }
     }
 
-        stage('Ansible run'){
+    stage('Ansible run'){
       steps {
         sh '''
         cd ansible &&\
