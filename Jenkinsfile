@@ -20,6 +20,14 @@ pipeline {
       }
     }
 
+    stage('Copy key'){
+        steps {
+          sh '''
+          cp jenkins /home/jenkins/docker-data
+          '''
+        }
+      }
+
     stage('Create tf.vars file') {
       steps {
         sh '''
