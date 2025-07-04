@@ -59,6 +59,14 @@ pipeline {
       }
     }
 
+  stage('Copy inventory'){
+      steps {
+        sh '''
+        cp ansible/inventory.ini /home/jenkins/docker-data
+        '''
+      }
+    }
+
     stage('Ansible run'){
       steps {
         sh '''
