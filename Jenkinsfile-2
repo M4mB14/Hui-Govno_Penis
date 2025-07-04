@@ -19,13 +19,13 @@ pipeline {
       }
     }
 
-  stage('Copy key'){
-      steps {
-        sh '''
-        cp jenkins /home/jenkins/docker-data
-        '''
+    stage('Copy key'){
+        steps {
+          sh '''
+          cp jenkins /home/jenkins/docker-data
+          '''
+        }
       }
-    }
 
     stage('Create tf.vars file') {
       steps {
@@ -59,13 +59,13 @@ pipeline {
       }
     }
 
-  stage('Copy inventory'){
-      steps {
-        sh '''
-        cp ansible/inventory.ini /home/jenkins/docker-data
-        '''
+    stage('Copy inventory'){
+        steps {
+          sh '''
+          cp ansible/inventory.ini /home/jenkins/docker-data
+          '''
+        }
       }
-    }
 
     stage('Ansible run'){
       steps {
