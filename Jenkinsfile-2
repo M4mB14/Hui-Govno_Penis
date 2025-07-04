@@ -1,5 +1,5 @@
 pipeline {
-  agent { label 'agent1' }
+  agent { label 'terr-agent' }
 
     environment{
     MY_TOKEN = credentials('yc_token')
@@ -10,7 +10,7 @@ pipeline {
   }
 
   stages {
-    stage('ssh key generate') {
+    stage('SSH key generate') {
       steps {
         sh '''
         rm -f jenkins jenkins.pub
@@ -33,5 +33,32 @@ pipeline {
         '''
       }
     }
+    stage('Terraform init and Ansible inventory init') {
+      steps {
+        sh '''
+        cd terraform &&\
+        terraform init &&\
+        terraform plan &&\
+        terraform apply --auto-approve &&\
+        VM_IP=$(terraform output -raw vm_ip) &&\
+
+        cd ../ansible &&\
+        echo "[vm]" > ./inventory.ini &&\
+        echo "$VM_IP ansible_user=ubuntu ansible_ssh_private_key_file=~/workspace/test-job/jenkins" >> ./inventory.ini &&\
+
+        sleep 60 
+        '''
+      }
+    }
+
+    stage('Ansible run'){
+      steps {
+        sh '''
+        cd ansible &&\
+        ansible-playbook -i inventory.ini site.yml
+        '''
+      }
+    }
   }
+
 }
