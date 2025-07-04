@@ -41,31 +41,43 @@ pipeline {
         '''
       }
     }
-    stage('Terraform init and Ansible inventory init') {
+    stage('Terraform and inventory init') {
       steps {
-        sh '''
-        cd terraform &&\
-        terraform init &&\
-        terraform plan &&\
-        terraform apply --auto-approve &&\
-        VM_IP=$(terraform output -raw vm_ip) &&\
-
-        cd ../ansible &&\
-        echo "[vm]" > ./inventory.ini &&\
-        echo "$VM_IP ansible_user=ubuntu ansible_ssh_private_key_file=~/workspace/test-job/jenkins" >> ./inventory.ini &&\
-
-        sleep 60 
-        '''
+        script {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+            sh '''
+              cd terraform && \
+              terraform init && \
+              terraform plan && \
+              terraform apply --auto-approve && \
+              VM_IP=$(terraform output -raw vm_ip) && \
+              cd ../ansible && \
+              echo "[vm]" > ./inventory.ini && \
+              echo "$VM_IP ansible_user=ubuntu ansible_ssh_private_key_file=~/workspace/test-job/jenkins" >> ./inventory.ini && \
+              sleep 20
+            '''
+          }
+        }
       }
     }
 
-    stage('Copy inventory'){
-        steps {
-          sh '''
-          cp ansible/inventory.ini /home/jenkins/docker-data
-          '''
-        }
+    stage('Copy inventory') {
+      when {
+        expression { currentBuild.rawBuild.getPreviousBuild()?.getResult()?.toString() != 'FAILURE' }
       }
+      steps {
+        sh 'cp ansible/inventory.ini /home/jenkins/docker-data'
+      }
+    }
+
+    stage('Use existing inventory (fallback)') {
+      when {
+        expression { currentBuild.rawBuild.getPreviousBuild()?.getResult()?.toString() == 'FAILURE' }
+      }
+      steps {
+        sh 'cp /home/jenkins/docker-data/inventory.ini ansible/inventory.ini'
+      }
+    }
 
     stage('Ansible run'){
       steps {
