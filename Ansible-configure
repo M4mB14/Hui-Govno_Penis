@@ -1,0 +1,25 @@
+pipeline {
+  agent { label 'terr-agent' }
+
+
+  stages {
+    stage('Copy files from mount dir'){
+        steps {
+          sh '''
+          cp /home/jenkins/docker-data/jenkis .
+          cp /home/jenkins/docker-data/inventory.ini ./ansible
+          '''
+        }
+      }
+
+    stage('Ansible run'){
+      steps {
+        sh '''
+        cd ansible &&\
+        ansible-playbook -i inventory.ini site.yml
+        '''
+      }
+    }
+  }
+
+}
