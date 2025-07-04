@@ -6,7 +6,7 @@ pipeline {
     stage('Copy files from mount dir'){
         steps {
           sh '''
-          cp /home/jenkins/docker-data/jenkis .
+          cp /home/jenkins/docker-data/jenkins .
           cp /home/jenkins/docker-data/inventory.ini ./ansible
           '''
         }
