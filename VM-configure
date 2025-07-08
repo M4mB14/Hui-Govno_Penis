@@ -1,5 +1,7 @@
 pipeline {
-  agent { label 'terr-agent' }
+  agent { node {
+    label 'agent2'
+  } }
 
     environment{
     MY_TOKEN = credentials('yc_token')
